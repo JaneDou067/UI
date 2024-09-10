@@ -1,4 +1,4 @@
-export default class HomePage {
+export default class HomePageEpm {
 
     //#region Selectors
     get modeToggle() { return cy.get('.header__vaulting-container .switch')}
@@ -15,10 +15,6 @@ export default class HomePage {
     get requiredFields() {return cy.get('[aria-required="true"]')}
     get errorHandledFields() {return cy.get('[aria-invalid="true"]')}
     get downloadButton() {return cy.get('[download]')}
-
-
-
-
 
     //#endregion
 
@@ -139,7 +135,13 @@ export default class HomePage {
     }
 
     deleteFile(filename) {
-        cy.task('deleteFile', filename);
+        cy.task('deleteFile', filename).then(success => {
+            if (success) {
+                cy.log('File deleted:', filename);
+            } else {
+                cy.log('File did not exist, no deletion needed:', filename);
+            }
+        });
 
         return this;
     }

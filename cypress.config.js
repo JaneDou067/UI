@@ -10,14 +10,16 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       on('task', {
         deleteFile(filename) {
-          const filePath = path.join(__dirname, 'cypress/downloads', filename);
+          const filePath = path.resolve(__dirname, '..', '..', 'your-directory', filename);
+
           if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
-            return null;
+            return true;
           } else {
-            throw new Error(`File not found: ${filename}`);
+            console.log('File does not exist:', filename);
+            return false;
           }
-        },
+        }
       });
     },
   },
