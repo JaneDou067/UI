@@ -7,7 +7,7 @@ describe('First test suit', () => {
         cy.clearLocalStorage()    // Clears all data in local storage
     });
 
-    it('Check the title is correct', () => {
+    it('Main site checks', () => {
         new HomePageEpm()
             .openSite()
         cy.title().should('eq', 'EPAM | Software Engineering & Product Development Services');
