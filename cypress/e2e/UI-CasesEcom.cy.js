@@ -14,7 +14,7 @@ describe('Ecom site checks', () => {
             .visitHeaderLink('Register')
             .inputRequiredFields()
             .submitButtonClick()
-            .successMessage.contains('Your registration completed')
+            .successMessageBanner.contains('Your registration completed')
     });
 
     it('Verify that allows login a User', () => {

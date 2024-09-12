@@ -3,24 +3,24 @@ export default class HomePageEcommerce {
     //#region Selectors
     get headerLogo() { return cy.get('.header-logo')}
     get headerLink() { return cy.get('.header-links')}
-    get submitButtonRegister() { return cy.get('#register-button')}
-    get submitButtonLogin() { return cy.get('.login-button')}
+    get registerSubmitButton() { return cy.get('#register-button')}
+    get loginSubmitButton() { return cy.get('.login-button')}
     get firstNameField() {return cy.get('#FirstName')}
     get lastNameField() {return cy.get('#LastName')}
     get emailField() {return cy.get('#Email')}
     get passwordField() {return cy.get('#Password')}
     get confirmPasswordField() {return cy.get('#ConfirmPassword')}
-    get successMessage() {return cy.get('.result')}
+    get successMessageBanner() {return cy.get('.result')}
     get logoutButton() {return cy.get('.ico-logout')}
     get menuTab(){ return cy.get('.top-menu [href="/computers"]')}
-    get subMenu(){ return cy.get('[href="/computers"] + .top-menu-triangle + .sublist.firstLevel')}
+    get subMenuItem(){ return cy.get('[href="/computers"] + .top-menu-triangle + .sublist.firstLevel')}
     get categoryPage(){ return cy.get('.top-menu [href="/digital-downloads"]')}
-    get sorting() {return cy.get('#products-orderby')}
-    get pageSize() {return cy.get('#products-pagesize')}
+    get sortingDropdown() {return cy.get('#products-orderby')}
+    get pageSizeDropdown() {return cy.get('#products-pagesize')}
     get productItem() {return cy.get('.page-body [class^="product"]>a[href="/album-3"]')}
-    get addToWishListBtn() {return cy.get('.add-to-wishlist-button')}
+    get addToWishListButton() {return cy.get('.add-to-wishlist-button')}
     get SuccessBanner() {return cy.get('.bar-notification.success[style*="display: block"]')}
-    get addToCartBtn() {return cy.get('.add-to-cart-button')}
+    get addToCartButton() {return cy.get('.add-to-cart-button')}
 
 
 
@@ -77,9 +77,9 @@ export default class HomePageEcommerce {
     submitButtonClick() {
         cy.url().then(url => {
             if (url.includes('/register')) {
-                this.submitButtonRegister.should('be.visible').click();
+                this.registerSubmitButton.should('be.visible').click();
             } else if (url.includes('/login')) { // Fixed the regular expression delimiter issue
-                this.submitButtonLogin.should('be.visible').click();
+                this.loginSubmitButton.should('be.visible').click();
             }
         });
 
@@ -94,7 +94,7 @@ export default class HomePageEcommerce {
 
     checkSubMenuOptions (texts) {
         texts.forEach(text => {
-            this.subMenu.contains(text).should('be.visible');
+            this.subMenuItem.contains(text).should('be.visible');
         });
 
         return this;
@@ -102,7 +102,7 @@ export default class HomePageEcommerce {
 
     visitCategoryPage(){
         this.categoryPage.should('be.visible').click()
-        this.sorting.should('be.visible')
+        this.sortingDropdown.should('be.visible')
 
         return this;
     }
@@ -112,8 +112,8 @@ export default class HomePageEcommerce {
             const sortName = option[0];
             const sortUrlParam = option[1];
 
-            this.sorting.find('option').contains(sortName).should('exist');
-            this.sorting.select(sortName);
+            this.sortingDropdown.find('option').contains(sortName).should('exist');
+            this.sortingDropdown.select(sortName);
 
             cy.url().should('include', sortUrlParam);
         });
@@ -126,8 +126,8 @@ export default class HomePageEcommerce {
             const dropdownOption = option[0];
             const pageSizeUrlParam = option[1];
 
-            this.pageSize.find('option').contains(dropdownOption).should('exist');
-            this.pageSize.select(dropdownOption);
+            this.pageSizeDropdown.find('option').contains(dropdownOption).should('exist');
+            this.pageSizeDropdown.select(dropdownOption);
 
             cy.url().should('include', pageSizeUrlParam);
         });
@@ -142,13 +142,13 @@ export default class HomePageEcommerce {
     }
 
     addWishlist() {
-        this.addToWishListBtn.click()
+        this.addToWishListButton.click()
 
         return this;
     }
 
     addToCart() {
-        this.addToCartBtn.click()
+        this.addToCartButton.click()
 
         return this;
     }

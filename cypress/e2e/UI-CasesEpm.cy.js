@@ -1,4 +1,5 @@
-import HomePageEpm from "../support/page_object/HomePageEpm";
+import HomePageEpm from "../support/page_object/Epm/HomePageEpm";
+import ContactUsPageEpm from "../support/page_object/Epm/ContactUsPageEpm";
 
 
 describe('First test suit', () => {
@@ -14,54 +15,66 @@ describe('First test suit', () => {
     });
 
     it('Check the ability to switch Light / Dark mode', () => {
-        new HomePageEpm()
-            .openSite()
-            .checkElementPresence('.dark-mode')
-            .switchToggle()
-            .checkElementPresence('.light-mode')
-            .switchToggle()
-
-        cy.get('.header__logo-light').should('be.visible') //todo: please keep getter in the page object
-
+        const homePage = new HomePageEpm();
+        homePage.openSite();
+        homePage.checkDarkMode().should('exist');
+        homePage.switchToggle();
+        homePage.checkLightMode().should('exist');
+        homePage.switchToggle();
+        homePage.lightModeHeader.should('be.visible');
     });
 
     it('Check that allow to change language to UA', () => {
         new HomePageEpm()
             .openSite()
-            .chooseLocale('.location-selector__item [lang="uk"]')
+            .chooseLocale()
             .handleExceptions()
-            .validateCareerSite()
+        let ukraineLocaleIndicator = HomePageEpm.ukraineLocaleIndicator;
+        let args = { ukraineLocaleIndicator };
+        cy.origin('https://careers.epam.ua', { args }, ({ ukraineLocaleIndicator }) => {
+                cy.get(ukraineLocaleIndicator).should('exist');
+        });
     });
 
     it('Check the policies list', () => {
         new HomePageEpm()
             .openSite()
-            .checkFooterElements(['COOKIE POLICY', 'WEB ACCESSIBILITY', 'PRIVACY POLICY','INVESTORS', 'OPEN SOURCE','APPLICANT PRIVACY NOTICE'])
+
+            HomePageEpm.policyLinks.forEach(linkSelector => {
+            cy.get(linkSelector).should('be.visible');
+        });
+
     });
 
-    it('Check that allow to switch location list by region', () => {
-        new HomePageEpm()
-            .openSite()
-            .checkRegionTile(['United States'])
-            .switchRegion('APAC')
-            .checkRegionTile(['Australia'])
-            .switchRegion('EMEA')
-            .checkRegionTile(['Armenia'])
+    it('Check that it allows switching the location list by region', () => {
+        const homePage = new HomePageEpm();
+        homePage.openSite();
+        homePage.getRegionTiles().contains('United States').should('be.visible');
+
+        homePage.switchToAPAC();
+        homePage.getRegionTiles().contains('Australia').should('be.visible');
+
+        homePage.switchToEMEA();
+        homePage.getRegionTiles().contains('Armenia').should('be.visible');
     });
 
     it('Check the search function', () => {
         new HomePageEpm()
             .openSite()
-            .runSearch('AI')
-            .checkCurrentPage('https://www.epam.com/search?q=AI')
+            .runSearch()
+
+        cy.url().should('include', 'https://www.epam.com/search?q=AI');
     });
 
-    it('Check forms fields validation', () => {
-        new HomePageEpm()
+    it.only('Check forms fields validation', () => {
+         new HomePageEpm()
             .openSite()
             .visitHeaderLink('Contact Us')
-            .submitForm()
-            .checkValidation()
+         const contactUsPageEpm = new ContactUsPageEpm();
+            contactUsPageEpm.submitContactForm()
+            contactUsPageEpm.requiredFields.should('have.length', 8);
+            contactUsPageEpm.errorHandledFieldsList.should('have.length', 6);
+
     });
 
     it('Check that the Company logo on the header lead to the main page', () => {
