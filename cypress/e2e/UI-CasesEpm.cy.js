@@ -21,7 +21,7 @@ describe('First test suit', () => {
             .checkElementPresence('.light-mode')
             .switchToggle()
 
-        cy.get('.header__logo-light').should('be.visible')
+        cy.get('.header__logo-light').should('be.visible') //todo: please keep getter in the page object
 
     });
 
@@ -76,8 +76,8 @@ describe('First test suit', () => {
     it('Check that allows to download report ', () => {
         new HomePageEpm()
             .openSite()
-            .deleteFile('EPAM_Corporate_Overview_Q4_EOY.pdf')
-            .checkDownloadRemoved('EPAM_Corporate_Overview_Q4_EOY.pdf')
+            .deleteFile('EPAM_Corporate_Overview_Q4_EOY.pdf') //todo: you don't need these two lines here - you can put actions on "downloadContent()" method
+            .checkDownloadRemoved('EPAM_Corporate_Overview_Q4_EOY.pdf')//todo: for the first run of your test these two lines would not work because of empty folder
             .visitHeaderLink('About')
             .checkCurrentPage('https://www.epam.com/about')
             .downloadContent()
