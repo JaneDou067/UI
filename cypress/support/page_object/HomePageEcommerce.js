@@ -17,9 +17,10 @@ export default class HomePageEcommerce {
     get categoryPage(){ return cy.get('.top-menu [href="/digital-downloads"]')}
     get sorting() {return cy.get('#products-orderby')}
     get pageSize() {return cy.get('#products-pagesize')}
-    get productPage() {return cy.get('.product-title a[href="/album-3"]')}
+    get productItem() {return cy.get('.page-body [class^="product"]>a[href="/album-3"]')}
     get addToWishListBtn() {return cy.get('.add-to-wishlist-button')}
     get SuccessBanner() {return cy.get('.bar-notification.success[style*="display: block"]')}
+    get addToCartBtn() {return cy.get('.add-to-cart-button')}
 
 
 
@@ -135,7 +136,7 @@ export default class HomePageEcommerce {
     }
 
     selectProduct() {
-        this.productPage.click()
+        this.productItem.should('exist').click()
 
         return this;
     }
@@ -145,6 +146,21 @@ export default class HomePageEcommerce {
 
         return this;
     }
+
+    addToCart() {
+        this.addToCartBtn.click()
+
+        return this;
+    }
+
+    checkSuccess(text){
+    this.SuccessBanner.should('exist').and('contain',(text))
+
+        return this;
+    }
+
+
+
 
 
 

@@ -62,7 +62,21 @@ describe('Ecom site checks', () => {
             .visitCategoryPage()
             .selectProduct()
             .addWishlist()
-            .SuccessBanner.should('exist')
+            .checkSuccess('The product has been added to your wishlist')
+            .visitHeaderLink('Wishlist')
+            .productItem.should('exist')
+
+    });
+
+    it('Verify that allows adding an item to the card', () => {
+        new HomePageEcommerce()
+            .openSite()
+            .visitCategoryPage()
+            .selectProduct()
+            .addToCart()
+            .checkSuccess('The product has been added to your shopping cart')
+            .visitHeaderLink('Shopping cart')
+            .productItem.should('exist')
     });
 
 
