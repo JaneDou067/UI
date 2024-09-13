@@ -1,6 +1,4 @@
 import {BasePageEpm} from "./BasePageEpm";
-import HomePageEpm from './HomePageEpm';
-import ContactUsPageEpm from "./ContactUsPageEpm";
 
 export default class AboutPageEpm extends BasePageEpm {
 

@@ -126,7 +126,7 @@ export default class HomePageEpm extends BasePageEpm {
         return this;
     }
 
-    runSearch(searchInputValue) {
+    runSearch() {
         this.searchIcon.click();
         this.searchInput.type('AI');
         this.searchSubmit.click();
@@ -134,13 +134,13 @@ export default class HomePageEpm extends BasePageEpm {
         return this;
     }
 
-    visitContactUsPage(page) {
+    visitContactUsPage() {
         this.SelectInHeaderContactOption.click({force: true})
 
         return new ContactUsPageEpm;
     }
 
-    visitAboutPage(page) {
+    visitAboutPage() {
         this.aboutPageSelector.click({force: true})
 
         return new AboutPageEpm;
