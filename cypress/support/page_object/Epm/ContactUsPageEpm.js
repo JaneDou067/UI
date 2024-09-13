@@ -1,6 +1,7 @@
-import HomePage from "./HomePageEpm";
+import {BasePageEpm} from "./BasePageEpm";
+import HomePageEpm from './HomePageEpm';
 
-export default class ContactUsPageEpm extends HomePage {
+export default class ContactUsPageEpm extends BasePageEpm {
 
 
 
@@ -20,11 +21,15 @@ export default class ContactUsPageEpm extends HomePage {
 
 
     submitContactForm(){
-        this.contactSubmitButton.should('be.visible').click()
+        this.contactSubmitButton.click()
 
         return this;
     }
 
+    returnHome() {
+        this.headerLogo.click()
+        return new HomePageEpm();
+    }
 
 
 
@@ -54,3 +59,5 @@ export default class ContactUsPageEpm extends HomePage {
 
 
 }
+
+export const  contactUsPage = new ContactUsPageEpm();

@@ -1,55 +1,72 @@
-import { BasePage } from './BasePageEpm';
+import {BasePageEpm} from './BasePageEpm';
+import ContactUsPageEpm from './ContactUsPageEpm';
+import AboutPageEpm from './AboutPageEpm';
 
 
-export default class HomePage extends BasePage  { //todo: you need to get a practice with inheritance Base Page (contains all elements, that are present on all pages), HomePage (class HomePage extends BasePage ),
-    // todo - AboutPage, ContuctUsPage() extends Base Page as well. .clickContactUsButton() will return new ContuctUsPage()
+export default class HomePageEpm extends BasePageEpm {
 
     //#region Selectors
     get modeToggle() {
         return cy.get('.header__vaulting-container .switch')
     }
+
     get darkModeIndicator() {
         return cy.get('.dark-mode');
     }
+
     get lightModeIndicator() {
         return cy.get('.light-mode');
     }
-    get headerLogo() {
-        return cy.get('.header__logo-container')
-    }
+
     get localeSelector() {
         return cy.get('.location-selector__button')
     }
+
     get ukraineOption() {
         return cy.get('.location-selector__item [lang="uk"]')
     }
+
     get lightModeHeader() {
         return cy.get('.header__logo-container')
     }
+
     get regionTile() {
         return cy.get('.locations-viewer-23__carousel');
     }
+
     get apacRegionButton() {
         return cy.get('.tabs-23__title').contains('APAC');
     }
+
     get emeaRegionButton() {
         return cy.get('.tabs-23__title').contains('EMEA');
     }
 
+    get SelectInHeaderContactOption() {
+        return cy.get('.header__controls .cta-button__text');
+    }
 
-    get regionSwitcher() { return cy.get('.tabs-23__link')}
-    get searchIcon() { return cy.get('.header-search-ui')}
-    get searchInput() { return cy.get('.header-search__input')}
-    get searchSubmit() { return cy.get('.custom-search-button')}
-    get headerLink() { return cy.get('[class*="top-navigation__"]')}
+    get aboutPageSelector() {
+        return cy.get('.top-navigation__item-link[href="/about"]');
+    }
 
-    get downloadButton() {return cy.get('[download]')}
+    get searchIcon() {
+        return cy.get('.header-search-ui')
+    }
+
+    get searchInput() {
+        return cy.get('.header-search__input')
+    }
+
+    get searchSubmit() {
+        return cy.get('.custom-search-button')
+    }
 
 
     //#endregion
 
     //#region Statics
-    static ukraineLocaleIndicator ='.no-touchevents[lang=\'uk-UA\']';
+    static ukraineLocaleIndicator = '.no-touchevents[lang=\'uk-UA\']';
 
     static policyLinks = [
         '.footer-links a[href="/cookie-policy"]',
@@ -61,17 +78,10 @@ export default class HomePage extends BasePage  { //todo: you need to get a prac
     ];
 
 
-
     //#endregion
 
 
 
-
-    openSite(){
-        cy.visit('https://www.epam.com/');
-
-        return this;
-    }
 
     handleExceptions() {
         cy.on('uncaught:exception', (e) => {
@@ -82,8 +92,8 @@ export default class HomePage extends BasePage  { //todo: you need to get a prac
         return this;
     }
 
-    switchToggle(){
-        this.modeToggle.should('be.visible').click();
+    switchToggle() {
+        this.modeToggle.click();
         return this;
     }
 
@@ -124,79 +134,21 @@ export default class HomePage extends BasePage  { //todo: you need to get a prac
         return this;
     }
 
-    visitHeaderLink(page) {
-        this.headerLink.contains(page).click({force: true})
+    visitContactUsPage(page) {
+        this.SelectInHeaderContactOption.click({force: true})
 
-        return this;
+        return new ContactUsPageEpm;
     }
 
+    visitAboutPage(page) {
+        this.aboutPageSelector.click({force: true})
 
-
-
-
-    checkCurrentPage(Url) {
-        cy.url().should('include', Url);
-
-        return this;
+        return new AboutPageEpm;
     }
-
-    returnHome() {
-        this.headerLogo.should('be.visible').click()
-         return this;
-    }
-
-    downloadContent(){
-        this.downloadButton.should('be.visible').click()
-
-        return this;
-    }
-
-    checkDownload(filename) {
-        cy.readFile(`cypress/downloads/${filename}`).should('exist');
-
-         return this;
-    }
-
-    deleteFile(filename) {
-        cy.task('deleteFile', filename).then(success => {
-            if (success) {
-                cy.log('File deleted:', filename);
-            } else {
-                cy.log('File did not exist, no deletion needed:', filename);
-            }
-        });
-
-        return this;
-    }
-
-    checkDownloadRemoved(filename) {
-        cy.readFile(`cypress/downloads/${filename}`).should('not.exist');
-
-        return this;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
 
 
-
+export const  homePageEpm = new HomePageEpm();
 

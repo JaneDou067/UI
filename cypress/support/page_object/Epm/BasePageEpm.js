@@ -1,23 +1,20 @@
-export class BasePage {
+export class BasePageEpm {
 
 
     //#region Selectors
 
+    get headerLogo() {
+        return cy.get('.header__logo-container')
+    }
 
     //#endregion
 
 
+    openSiteEpm() {
+        cy.visit('https://www.epam.com/');
+        this.headerLogo.should('be.visible')
 
-
-
-
-    openSite(url) {
-        cy.visit(url);
         return this;
     }
 
-    checkPageUrl(includesText) {
-        cy.url().should('include', includesText);
-        return this;
-    }
 }

@@ -1,5 +1,7 @@
-import HomePageEpm from "../support/page_object/Epm/HomePageEpm";
-import ContactUsPageEpm from "../support/page_object/Epm/ContactUsPageEpm";
+import HomePageEpm, {homePageEpm} from "../support/page_object/Epm/HomePageEpm";
+import {contactUsPage} from "../support/page_object/Epm/ContactUsPageEpm";
+import {aboutPageEpm} from "../support/page_object/Epm/AboutPageEpm";
+
 
 
 describe('First test suit', () => {
@@ -10,13 +12,13 @@ describe('First test suit', () => {
 
     it('Main site checks', () => {
         new HomePageEpm()
-            .openSite()
+            .openSiteEpm()
         cy.title().should('eq', 'EPAM | Software Engineering & Product Development Services');
     });
 
     it('Check the ability to switch Light / Dark mode', () => {
         const homePage = new HomePageEpm();
-        homePage.openSite();
+        homePage.openSiteEpm();
         homePage.checkDarkMode().should('exist');
         homePage.switchToggle();
         homePage.checkLightMode().should('exist');
@@ -25,8 +27,8 @@ describe('First test suit', () => {
     });
 
     it('Check that allow to change language to UA', () => {
-        new HomePageEpm()
-            .openSite()
+        homePageEpm
+            .openSiteEpm()
             .chooseLocale()
             .handleExceptions()
         let ukraineLocaleIndicator = HomePageEpm.ukraineLocaleIndicator;
@@ -37,65 +39,66 @@ describe('First test suit', () => {
     });
 
     it('Check the policies list', () => {
-        new HomePageEpm()
-            .openSite()
+            homePageEpm
+                .openSiteEpm()
 
-            HomePageEpm.policyLinks.forEach(linkSelector => {
-            cy.get(linkSelector).should('be.visible');
-        });
-
+                HomePageEpm.policyLinks.forEach(linkSelector => {
+                cy.get(linkSelector).should('be.visible');
+            });
     });
 
     it('Check that it allows switching the location list by region', () => {
-        const homePage = new HomePageEpm();
-        homePage.openSite();
-        homePage.getRegionTiles().contains('United States').should('be.visible');
+            const homePage = new HomePageEpm();
+            homePage.openSiteEpm();
+            homePage.getRegionTiles().contains('United States').should('be.visible');
 
-        homePage.switchToAPAC();
-        homePage.getRegionTiles().contains('Australia').should('be.visible');
+            homePage.switchToAPAC();
+            homePage.getRegionTiles().contains('Australia').should('be.visible');
 
-        homePage.switchToEMEA();
-        homePage.getRegionTiles().contains('Armenia').should('be.visible');
+            homePage.switchToEMEA();
+            homePage.getRegionTiles().contains('Armenia').should('be.visible');
     });
 
     it('Check the search function', () => {
-        new HomePageEpm()
-            .openSite()
-            .runSearch()
-
-        cy.url().should('include', 'https://www.epam.com/search?q=AI');
+            homePageEpm
+                .openSiteEpm()
+                .runSearch()
+                cy.url().should('include', 'https://www.epam.com/search?q=AI');
     });
 
-    it.only('Check forms fields validation', () => {
-         new HomePageEpm()
-            .openSite()
-            .visitHeaderLink('Contact Us')
-         const contactUsPageEpm = new ContactUsPageEpm();
-            contactUsPageEpm.submitContactForm()
-            contactUsPageEpm.requiredFields.should('have.length', 8);
-            contactUsPageEpm.errorHandledFieldsList.should('have.length', 6);
+    it('Check forms fields validation', () => {
+            homePageEpm
+                .openSiteEpm()
+                .visitContactUsPage()
+
+            contactUsPage
+                .submitContactForm()
+                .errorHandledFieldsList.should('have.length', 6);
+            contactUsPage
+                .requiredFields.should('have.length', 8);
 
     });
 
     it('Check that the Company logo on the header lead to the main page', () => {
-        new HomePageEpm()
-            .openSite()
-            .visitHeaderLink('About')
-            .checkCurrentPage('https://www.epam.com/about')
+        homePageEpm
+            .openSiteEpm()
+            .visitContactUsPage()
+            cy.url().should('include', 'https://www.epam.com/about/who-we-are/contact')
+        contactUsPage
             .returnHome()
-            .checkCurrentPage('https://www.epam.com')
+            cy.url().should('include', 'https://www.epam.com')
+
     });
 
     it('Check that allows to download report ', () => {
-        new HomePageEpm()
-            .openSite()
-            .deleteFile('EPAM_Corporate_Overview_Q4_EOY.pdf') //todo: you don't need these two lines here - you can put actions on "downloadContent()" method
-            .checkDownloadRemoved('EPAM_Corporate_Overview_Q4_EOY.pdf')//todo: for the first run of your test these two lines would not work because of empty folder
-            .visitHeaderLink('About')
-            .checkCurrentPage('https://www.epam.com/about')
-            .downloadContent()
-            .checkDownload('EPAM_Corporate_Overview_Q4_EOY.pdf')
+        homePageEpm
+            .openSiteEpm()
+            .visitAboutPage()
+            cy.url().should('include', 'https://www.epam.com/about')
 
+        aboutPageEpm
+            .downloadContent()
+            cy.readFile(`cypress/downloads/EPAM_Corporate_Overview_Q4_EOY.pdf`).should('exist')
     });
 
 });
