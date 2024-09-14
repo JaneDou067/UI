@@ -1,12 +1,8 @@
 import {BasePageEcommerce} from "./BasePageEcommerce";
-import RegisterPageEcommerce from "./RegisterPageEcommerce";
-import LoginPageEcommerce from "./LoginPageEcommerce";
-import CartPageEcommerce from "./CartPageEcommerce";
-import CheckoutPageEcommerce from "./CheckoutPageEcommerce";
-import HomePageEcommerce from "./HomePageEcommerce";
+import WishlistPageEcommerce from "./WishlistPageEcommerce";
 
 
-export default class ProductPageEcommerce extends BasePageEcommerce{
+export default class ProductPageEcommerce extends BasePageEcommerce {
 
     //#region Selectors
     get registerPageLink() {
@@ -16,9 +12,11 @@ export default class ProductPageEcommerce extends BasePageEcommerce{
     get sortingDropdown() {
         return cy.get('#products-orderby')
     }
+
     get nameAscSortingOption() {
         return "Name: A to Z";
     }
+
     get nameDescSortingOption() {
         return "Name: Z to A";
     }
@@ -55,11 +53,22 @@ export default class ProductPageEcommerce extends BasePageEcommerce{
         return "12";
     }
 
-    get productItem() {return cy.get('.page-body [class^="product"]>a[href="/album-3"]')}
-    get addToWishListButton() {return cy.get('.add-to-wishlist-button')}
-    get addToCartButton() {return cy.get('.add-to-cart-button')}
+    get wishlistPageLink() {
+        return cy.get('.header-links .ico-wishlist')
+    }
+
+    get addToWishListButton() {
+        return cy.get('.add-to-wishlist-button')
+    }
+
+    get addToCartButton() {
+        return cy.get('[data-productid="53"] .product-box-add-to-cart-button')
+    }
 
 //#endregion
+
+
+
 
 
     selectNameAscSortingOption() {
@@ -158,62 +167,35 @@ export default class ProductPageEcommerce extends BasePageEcommerce{
     }
 
 
-
-
-
-
-
-
     selectProduct() {
         this.productItem.should('exist').click()
 
         return this;
     }
 
+    addWishlist() {
+        this.addToWishListButton.click()
+
+        return this;
+    }
 
 
+    visitWishlistPage() {
+        this.wishlistPageLink.click()
+        this.headerLogo.should('be.visible')
+
+        return WishlistPageEcommerce;
+    }
 
 
+    addToCart() {
+        this.addToCartButton.click()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return this;
+    }
 
 
 }
-export const  productPageEcommerce = new ProductPageEcommerce();
+export const productPageEcommerce = new ProductPageEcommerce();
 
 

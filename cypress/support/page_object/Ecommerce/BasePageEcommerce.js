@@ -15,9 +15,14 @@ export class BasePageEcommerce {
         return cy.get('#Password')
     }
 
+    get productItem() {
+        return cy.get('.page-body [class^="product"]>a[href="/album-3"]')
+    }
 
 
-
+    get SuccessBanner() {
+        return cy.get('.bar-notification.success[style*="display: block"]')
+    }
 
     //#endregion
 
@@ -31,15 +36,11 @@ export class BasePageEcommerce {
 
 
 
+    checkSuccess(text){
+        this.SuccessBanner.should('exist').and('contain',(text))
 
-
-
-
-
-
-
-
-
+        return this;
+    }
 
 
 

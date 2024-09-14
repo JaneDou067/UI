@@ -1,14 +1,13 @@
-import HomePageEcommerce, {homePageEcommerce} from "../support/page_object/Ecommerce/HomePageEcommerce";
-import {BasePageEcommerce} from "../support/page_object/Ecommerce/BasePageEcommerce";
-import RegisterPageEcommerce, {registerPageEcommerce} from "../support/page_object/Ecommerce/RegisterPageEcommerce";
-import LoginPageEcommerce, {loginPageEcommerce} from "../support/page_object/Ecommerce/LoginPageEcommerce";
-import CartPageEcommerce from "../support/page_object/Ecommerce/CartPageEcommerce";
-import WishlistPageEcommerce from "../support/page_object/Ecommerce/WishlistPageEcommerce";
-import CheckoutPageEcommerce from "../support/page_object/Ecommerce/CheckoutPageEcommerce";
-import {productPageEcommerce} from "../support/page_object/Ecommerce/ProductPageEcommerce";
+import  {homePageEcommerce} from "../support/page_object/Ecommerce/HomePageEcommerce";
+import  {registerPageEcommerce} from "../support/page_object/Ecommerce/RegisterPageEcommerce";
+import  {loginPageEcommerce} from "../support/page_object/Ecommerce/LoginPageEcommerce";
+import  {cartPageEcommerce} from "../support/page_object/Ecommerce/CartPageEcommerce";
+import  {wishlistPageEcommerce} from "../support/page_object/Ecommerce/WishlistPageEcommerce";
+import  {checkoutPageEcommerce} from "../support/page_object/Ecommerce/CheckoutPageEcommerce";
+import  {productPageEcommerce} from "../support/page_object/Ecommerce/ProductPageEcommerce";
 
 
-describe('Ecom site checks', () => {
+describe('Ecommerce site checks', () => {
     beforeEach(() => {
         cy.clearCookies()
         cy.clearLocalStorage()
@@ -104,7 +103,7 @@ describe('Ecom site checks', () => {
             .productTitles.should('have.length', 12);
     });
 
-    it.only('Verify that allows adding an item to the Wishlist', () => {
+    it('Verify that allows adding an item to the Wishlist', () => {
         homePageEcommerce
             .openSite()
             .visitDigitalCategoryPage()
@@ -112,47 +111,62 @@ describe('Ecom site checks', () => {
             .selectProduct()
             .addWishlist()
             .checkSuccess('The product has been added to your wishlist')
-            .visitRegisterPage('Wishlist')
+            .visitWishlistPage()
+        wishlistPageEcommerce
+            .pageTitle.should('contain','Wishlist' )
+        wishlistPageEcommerce
             .productItem.should('exist')
-
     });
 
     it('Verify that allows adding an item to the card', () => {
-        new HomePageEcommerce()
+        homePageEcommerce
             .openSite()
             .visitDigitalCategoryPage()
-            .selectProduct()
+        productPageEcommerce
             .addToCart()
             .checkSuccess('The product has been added to your shopping cart')
-            .visitRegisterPage('Shopping cart')
+        homePageEcommerce
+            .visitCartPage()
+        cartPageEcommerce
             .productItem.should('exist')
     });
 
+    it('Verify that allows removing an item from the card', () => {
+        homePageEcommerce
+            .openSite()
+            .visitDigitalCategoryPage()
+        productPageEcommerce
+            .addToCart()
+        homePageEcommerce
+            .visitCartPage()
+        cartPageEcommerce
+            .productItem.should('exist')
+        cartPageEcommerce
+            .removeItemFromCart()
+        cartPageEcommerce
+            .productItem.should('not.exist')
+    });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    it('Verify that allows checkout an item ', () => {
+        homePageEcommerce
+            .openSite()
+            .visitDigitalCategoryPage()
+        productPageEcommerce
+            .addToCart()
+        homePageEcommerce
+            .visitCartPage()
+        cartPageEcommerce
+            .productItem.should('exist')
+        cartPageEcommerce
+            .visitCheckoutPage()
+        checkoutPageEcommerce
+            .inputCheckoutRequiredFields()
+            .submitUserDataCheckout()
+            .enterPaymentDetails()
+        cy.url().should('include','/checkout/completed/')
+        checkoutPageEcommerce
+            .pageTitle.contains('Your order has been successfully processed!')
+    });
 
 
 });

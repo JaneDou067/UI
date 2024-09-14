@@ -1,0 +1,10 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "country": "Ukraine",
+  "city": "Kyiv",
+  "address": "123 Freedom St",
+  "postalCode": "01001",
+  "phoneNumber": "0123456789"
+}

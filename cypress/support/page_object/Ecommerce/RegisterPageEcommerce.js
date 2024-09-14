@@ -1,11 +1,4 @@
 import {BasePageEcommerce} from "./BasePageEcommerce";
-import LoginPageEcommerce from "./LoginPageEcommerce";
-import CartPageEcommerce from "./CartPageEcommerce";
-import WishlistPageEcommerce from "./WishlistPageEcommerce";
-import CheckoutPageEcommerce from "./CheckoutPageEcommerce";
-import HomePageEcommerce from "./HomePageEcommerce";
-import ProductPageEcommerce from "./ProductPageEcommerce";
-
 
 
 export default class RegisterPageEcommerce extends BasePageEcommerce {
@@ -61,24 +54,6 @@ export default class RegisterPageEcommerce extends BasePageEcommerce {
 
         return this;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

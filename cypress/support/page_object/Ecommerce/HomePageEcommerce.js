@@ -2,25 +2,23 @@ import {BasePageEcommerce} from "./BasePageEcommerce";
 import RegisterPageEcommerce from "./RegisterPageEcommerce";
 import LoginPageEcommerce from "./LoginPageEcommerce";
 import CartPageEcommerce from "./CartPageEcommerce";
-import WishlistPageEcommerce from "./WishlistPageEcommerce";
-import CheckoutPageEcommerce from "./CheckoutPageEcommerce";
 import ProductPageEcommerce from "./ProductPageEcommerce";
 
 
-
-export default class HomePageEcommerce extends BasePageEcommerce{
+export default class HomePageEcommerce extends BasePageEcommerce {
 
     //#region Selectors
     get registerPageLink() {
         return cy.get('.ico-register')
     }
+
     get LoginPageLink() {
         return cy.get('.ico-login')
     }
 
-    get subGroupLinks() {
-        return cy.get('[href="/computers"] + .top-menu-triangle + .sublist.firstLevel a')
-    }
+    // get subGroupLinks() {
+    //     return cy.get('[href="/computers"] + .top-menu-triangle + .sublist.firstLevel a')
+    // }
 
     get digitalCategoryPage() {
         return cy.get('.top-menu [href="/digital-downloads"]')
@@ -30,36 +28,15 @@ export default class HomePageEcommerce extends BasePageEcommerce{
         return cy.get('.top-menu [href="/apparel-shoes"]')
     }
 
-
-
-
-
-    get menuTab(){ return cy.get('.top-menu [href="/computers"]')}
-
-
-
-    get SuccessBanner() {
-        return cy.get('.bar-notification.success[style*="display: block"]')
+    get menuTab() {
+        return cy.get('.top-menu [href="/computers"]')
+    }
+    get cartPageLink() {
+        return cy.get('.header-links .ico-cart')
     }
 
 
     //#endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     visitRegisterPage() {
@@ -82,7 +59,7 @@ export default class HomePageEcommerce extends BasePageEcommerce{
         return this;
     }
 
-    visitApparelAndShoesCategoryPage(){
+    visitApparelAndShoesCategoryPage() {
         this.apparelAndShoesCategoryPage.click()
         cy.url().should('include', '/apparel-shoes')
 
@@ -90,89 +67,21 @@ export default class HomePageEcommerce extends BasePageEcommerce{
     }
 
 
-
-
-
-
-    visitDigitalCategoryPage(){
+    visitDigitalCategoryPage() {
         this.digitalCategoryPage.should('be.visible').click()
 
         return ProductPageEcommerce;
     }
 
-    addWishlist() {
-        this.addToWishListButton.click()
+    visitCartPage() {
+        this.cartPageLink.click()
 
-        return this;
+        return CartPageEcommerce;
     }
-
-    addToCart() {
-        this.addToCartButton.click()
-
-        return this;
-    }
-
-    checkSuccess(text){
-    this.SuccessBanner.should('exist').and('contain',(text))
-
-        return this;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
-export const  homePageEcommerce = new HomePageEcommerce();
+export const homePageEcommerce = new HomePageEcommerce();
 
 
 
