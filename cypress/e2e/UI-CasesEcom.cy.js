@@ -1,5 +1,11 @@
-
-import HomePageEcommerce from "../support/page_object/HomePageEcommerce";
+import HomePageEcommerce, {homePageEcommerce} from "../support/page_object/Ecommerce/HomePageEcommerce";
+import {BasePageEcommerce} from "../support/page_object/Ecommerce/BasePageEcommerce";
+import RegisterPageEcommerce, {registerPageEcommerce} from "../support/page_object/Ecommerce/RegisterPageEcommerce";
+import LoginPageEcommerce, {loginPageEcommerce} from "../support/page_object/Ecommerce/LoginPageEcommerce";
+import CartPageEcommerce from "../support/page_object/Ecommerce/CartPageEcommerce";
+import WishlistPageEcommerce from "../support/page_object/Ecommerce/WishlistPageEcommerce";
+import CheckoutPageEcommerce from "../support/page_object/Ecommerce/CheckoutPageEcommerce";
+import {productPageEcommerce} from "../support/page_object/Ecommerce/ProductPageEcommerce";
 
 
 describe('Ecom site checks', () => {
@@ -9,61 +15,104 @@ describe('Ecom site checks', () => {
     });
 
     it('Verify that allows register a User', () => {
-        new HomePageEcommerce()
+        homePageEcommerce
             .openSite()
-            .visitHeaderLink('Register')
-            .inputRequiredFields()
+            .visitRegisterPage()
+        registerPageEcommerce
+            .inputRegisterRequiredFields()
             .submitButtonClick()
             .successMessageBanner.contains('Your registration completed')
     });
 
     it('Verify that allows login a User', () => {
-        new HomePageEcommerce()
+        homePageEcommerce
             .openSite()
-            .visitHeaderLink('Log in')
-            .inputRequiredFields()
+            .visitLoginPage()
+        loginPageEcommerce
+            .inputLoginRequiredFields()
             .submitButtonClick()
             .logoutButton.should('be.visible')
     });
 
     it('Verify that ‘Computers’ group has 3 sub-groups with correct names', () => {
-        new HomePageEcommerce()
+        homePageEcommerce
             .openSite()
-            .hoverOption()
-            .checkSubMenuOptions(['Desktops','Notebooks','Accessories'])
+            .hoverOverCategory()
+            const subGroupNames = ['Desktops', 'Notebooks', 'Accessories'];
+            subGroupNames.forEach((name) => {
+                cy.get('.sublist.firstLevel').contains(name).should('be.visible');
+        });
     });
 
-    it('Verify that allows sorting items (different options)', () => {
-        new HomePageEcommerce()
+    it('Verify that allows sorting items (Name ASC)', () => {
+        homePageEcommerce
             .openSite()
-            .visitCategoryPage()
-            .checkItemsSorting([
-                ['Name: Z to A', 'orderby=6'],
-                ['Price: Low to High', 'orderby=10'],
-                ['Price: High to Low', 'orderby=11'],
-                ['Created on', 'orderby=15']
-            ]);
+            .visitApparelAndShoesCategoryPage()
+        productPageEcommerce
+            .selectNameAscSortingOption()
+        .checkIfTitlesSortedAscending().then(isSorted => {
+            expect(isSorted).to.be.true;
+        });
     });
 
-    it('Verify that allows changing number of items on page', () => {
-        new HomePageEcommerce()
+    it('Verify that allows sorting items (Name DESC)', () => {
+        homePageEcommerce
             .openSite()
-            .visitCategoryPage()
-            .checkPageSize([
-                ['4', 'pagesize=4'],
-                ['8', 'pagesize=8'],
-                ['12', 'pagesize=12']
-            ]);
+            .visitApparelAndShoesCategoryPage()
+        productPageEcommerce
+            .selectNameDescSortingOption()
+            .checkIfTitlesSortedDescending().then(isSorted => {
+            expect(isSorted).to.be.true;
+        });
     });
 
-    it('Verify that allows adding an item to the Wishlist', () => {
-        new HomePageEcommerce()
+    it('Verify that allows sorting items (Price ASC)', () => {
+        homePageEcommerce
             .openSite()
-            .visitCategoryPage()
+            .visitApparelAndShoesCategoryPage()
+        productPageEcommerce
+            .selectPriceAscSortingOption()
+            .checkIfPricesSortedAscending().then(isSorted => {
+            expect(isSorted).to.be.true;
+        });
+    });
+
+    it('Verify that allows sorting items (Price DESC)', () => {
+        homePageEcommerce
+            .openSite()
+            .visitApparelAndShoesCategoryPage()
+        productPageEcommerce
+            .selectPriceDescSortingOption()
+            .checkIfPricesSortedDescending().then(isSorted => {
+            expect(isSorted).to.be.true;
+        });
+    });
+
+
+    it('Verify that allows changing number of items on page ', () => {
+        homePageEcommerce
+            .openSite()
+            .visitApparelAndShoesCategoryPage()
+        productPageEcommerce
+            .select4PageSizeOption()
+            .productTitles.should('have.length', 4);
+        productPageEcommerce
+            .select8PageSizeOption()
+            .productTitles.should('have.length', 8);
+        productPageEcommerce
+            .select12PageSizeOption()
+            .productTitles.should('have.length', 12);
+    });
+
+    it.only('Verify that allows adding an item to the Wishlist', () => {
+        homePageEcommerce
+            .openSite()
+            .visitDigitalCategoryPage()
+        productPageEcommerce
             .selectProduct()
             .addWishlist()
             .checkSuccess('The product has been added to your wishlist')
-            .visitHeaderLink('Wishlist')
+            .visitRegisterPage('Wishlist')
             .productItem.should('exist')
 
     });
@@ -71,11 +120,11 @@ describe('Ecom site checks', () => {
     it('Verify that allows adding an item to the card', () => {
         new HomePageEcommerce()
             .openSite()
-            .visitCategoryPage()
+            .visitDigitalCategoryPage()
             .selectProduct()
             .addToCart()
             .checkSuccess('The product has been added to your shopping cart')
-            .visitHeaderLink('Shopping cart')
+            .visitRegisterPage('Shopping cart')
             .productItem.should('exist')
     });
 

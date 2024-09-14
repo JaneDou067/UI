@@ -2,13 +2,10 @@ import {BasePageEpm} from "./BasePageEpm";
 
 export default class AboutPageEpm extends BasePageEpm {
 
-
-
     //#region Selectors
     get downloadButton() {
         return cy.get('[download]')
     }
-
 
     //#endregion
 
@@ -29,40 +26,6 @@ export default class AboutPageEpm extends BasePageEpm {
 
         return this;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 export const  aboutPageEpm = new AboutPageEpm();

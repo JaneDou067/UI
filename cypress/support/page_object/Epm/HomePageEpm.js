@@ -18,16 +18,16 @@ export default class HomePageEpm extends BasePageEpm {
         return cy.get('.light-mode');
     }
 
+    get lightModeHeader() {
+        return cy.get('.header__logo-container')
+    }
+
     get localeSelector() {
         return cy.get('.location-selector__button')
     }
 
     get ukraineOption() {
         return cy.get('.location-selector__item [lang="uk"]')
-    }
-
-    get lightModeHeader() {
-        return cy.get('.header__logo-container')
     }
 
     get regionTile() {
@@ -98,10 +98,12 @@ export default class HomePageEpm extends BasePageEpm {
     }
 
     checkDarkMode() {
+
         return this.darkModeIndicator;
     }
 
     checkLightMode() {
+
         return this.lightModeIndicator;
     }
 
@@ -118,11 +120,13 @@ export default class HomePageEpm extends BasePageEpm {
 
     switchToAPAC() {
         this.apacRegionButton.click();
+
         return this;
     }
 
     switchToEMEA() {
         this.emeaRegionButton.click();
+
         return this;
     }
 
@@ -148,7 +152,5 @@ export default class HomePageEpm extends BasePageEpm {
 
 
 }
-
-
 export const  homePageEpm = new HomePageEpm();
 
