@@ -20,13 +20,13 @@ export default class ContactUsPageEpm extends BasePageEpm {
 
 
 
-    submitContactForm(){
+    submitContactForm(){ //todo" please use action on the name (clickSubmitButton())
         this.contactSubmitButton.click()
 
         return this;
     }
 
-    returnHome() {
+    returnHome() { //todo: it is better to use action, that you make in the name - clickHeaderLogo()
         this.headerLogo.click()
         return new HomePageEpm();
     }

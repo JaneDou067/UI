@@ -42,11 +42,11 @@ export default class HomePageEpm extends BasePageEpm {
         return cy.get('.tabs-23__title').contains('EMEA');
     }
 
-    get SelectInHeaderContactOption() {
-        return cy.get('.header__controls .cta-button__text');
+    get SelectInHeaderContactOption() { //todo: please use small letters at the beginning of the name
+        return cy.get('.header__controls .cta-button__text'); //todo it is strange selector, try .header__content > a.header__control and name method contactUsHeaderButton() or contactUsHeaderLink()
     }
 
-    get aboutPageSelector() {
+    get aboutPageSelector() {//todo: use clear name like - aboutHeaderLink()
         return cy.get('.top-navigation__item-link[href="/about"]');
     }
 
@@ -66,9 +66,9 @@ export default class HomePageEpm extends BasePageEpm {
     //#endregion
 
     //#region Statics
-    static ukraineLocaleIndicator = '.no-touchevents[lang=\'uk-UA\']';
+    static ukraineLocaleIndicator = '.no-touchevents[lang=\'uk-UA\']'; //todo: here is no need to put it here
 
-    static policyLinks = [
+    static policyLinks = [ //todo: it is a bad approach to use such array
         '.footer-links a[href="/cookie-policy"]',
         '.footer-links  a[href*="privacy.epam.com"]',
         '.footer-links   a[href="/investors"]',
@@ -97,28 +97,28 @@ export default class HomePageEpm extends BasePageEpm {
         return this;
     }
 
-    checkDarkMode() {
+    checkDarkMode() { //todo: it is not a method (here is no action inside, you can use getter in your test
 
         return this.darkModeIndicator;
     }
 
-    checkLightMode() {
+    checkLightMode() { //todo: it is not a method (here is no action inside), you can use getter in your test
 
         return this.lightModeIndicator;
     }
 
-    chooseLocale() {
+    chooseLocale() {//todo: please give the appropriate name - it is not any locale - it is Ukrainian locale
         this.localeSelector.click()
         this.ukraineOption.click()
 
         return this;
     }
 
-    getRegionTiles() {
+    getRegionTiles() { //todo: it is not a method (here is no action inside), you can use getter in your test
         return this.regionTile;
     }
 
-    switchToAPAC() {
+    switchToAPAC() { //todo: better more clear name like: clickApacTab
         this.apacRegionButton.click();
 
         return this;
@@ -130,9 +130,9 @@ export default class HomePageEpm extends BasePageEpm {
         return this;
     }
 
-    runSearch() {
+    runSearch() { //todo: make parametrized method (runSearch(text))
         this.searchIcon.click();
-        this.searchInput.type('AI');
+        this.searchInput.type('AI'); //todo: here text in brackets
         this.searchSubmit.click();
 
         return this;
@@ -144,7 +144,7 @@ export default class HomePageEpm extends BasePageEpm {
         return new ContactUsPageEpm;
     }
 
-    visitAboutPage() {
+    visitAboutPage() { //todo: use action-words in the name
         this.aboutPageSelector.click({force: true})
 
         return new AboutPageEpm;
