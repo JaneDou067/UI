@@ -13,27 +13,27 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         return cy.get('#products-orderby')
     }
 
-    get nameAscSortingOption() {
+    get nameAscSortingOption() { //todo: do not keep string in getters, you can use string in your method
         return "Name: A to Z";
     }
 
-    get nameDescSortingOption() {
+    get nameDescSortingOption() { //todo: do not keep string in getters, you can use string in your method
         return "Name: Z to A";
     }
 
-    get priceAscSortingOption() {
+    get priceAscSortingOption() { //todo: do not keep string in getters, you can use string in your method
         return "Price: Low to High";
     }
 
-    get priceDescSortingOption() {
+    get priceDescSortingOption() { //todo: do not keep string in getters, you can use string in your method
         return "Price: High to Low";
     }
 
-    get productTitles() {
+    get productTitles() {//todo productTitlesList
         return cy.get('.product-title a')
     }
 
-    get productPrices() {
+    get productPrices() { //todo: list
         return cy.get('.prices span')
     }
 
@@ -41,19 +41,19 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         return cy.get('#products-pagesize')
     }
 
-    get pageSize4Option() {
+    get pageSize4Option() { //todo: do not keep string in getters, you can use string in your method
         return "4";
     }
 
-    get pageSize8Option() {
+    get pageSize8Option() { //todo: do not keep string in getters, you can use string in your method
         return "8";
     }
 
-    get pageSize12Option() {
+    get pageSize12Option() { //todo: do not keep string in getters, you can use string in your method
         return "12";
     }
 
-    get wishlistPageLink() {
+    get wishlistPageLink() {//todo: wishlistHeaderLink (not page)
         return cy.get('.header-links .ico-wishlist')
     }
 
@@ -61,7 +61,7 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         return cy.get('.add-to-wishlist-button')
     }
 
-    get addToCartButton() {
+    get addToCartButton() { //todo: it is the button for 3rd album, the item could change, please, use list of this buttons
         return cy.get('[data-productid="53"] .product-box-add-to-cart-button')
     }
 
@@ -145,6 +145,13 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         });
     }
 
+    //todo: try one parametrized method for all selection options: (and for sorting try the same approach, but you have different value in url, so for this use "case" approach
+    // selectItemsPerPage(number) {
+    //     this.pageSizeDropdown.select(number);
+    //     cy.url().should('include', `pagesize=${number}`);
+    //     return this;
+    // }
+
     select4PageSizeOption() {
         this.pageSizeDropdown.select(this.pageSize4Option);
         cy.url().should('include', 'pagesize=4');
@@ -167,13 +174,13 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
     }
 
 
-    selectProduct() {
+    selectProduct() {//todo: when you change the locator to list, you can use number of product as a parameter
         this.productItem.should('exist').click()
 
         return this;
     }
 
-    addWishlist() {
+    addWishlist() { //todo: clickAddToWishlistBtn()
         this.addToWishListButton.click()
 
         return this;

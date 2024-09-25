@@ -8,27 +8,27 @@ import ProductPageEcommerce from "./ProductPageEcommerce";
 export default class HomePageEcommerce extends BasePageEcommerce {
 
     //#region Selectors
-    get registerPageLink() {
+    get registerPageLink() {//todo: word Page is redundant, because you link name is Register
         return cy.get('.ico-register')
     }
 
-    get LoginPageLink() {
+    get LoginPageLink() {//todo: don't use capital letters at the beginning
         return cy.get('.ico-login')
     }
 
-    // get subGroupLinks() {
+    // get subGroupLinks() { //todo: don't leave commented code
     //     return cy.get('[href="/computers"] + .top-menu-triangle + .sublist.firstLevel a')
     // }
 
-    get digitalCategoryPage() {
+    get digitalCategoryPage() { //todo: it is not category page, digitalDownloadsLink (or tab)
         return cy.get('.top-menu [href="/digital-downloads"]')
     }
 
-    get apparelAndShoesCategoryPage() {
+    get apparelAndShoesCategoryPage() { //todo: it is not page, it is link or tab
         return cy.get('.top-menu [href="/apparel-shoes"]')
     }
 
-    get menuTab() {
+    get menuTab() {//todo: it is not menu tab - it is computerMenuTab
         return cy.get('.top-menu [href="/computers"]')
     }
     get cartPageLink() {
@@ -39,21 +39,21 @@ export default class HomePageEcommerce extends BasePageEcommerce {
     //#endregion
 
 
-    visitRegisterPage() {
+    visitRegisterPage() { //todo: name it with action word clickRegisterLink()
         this.registerPageLink.click()
         this.headerLogo.should('be.visible')
 
-        return RegisterPageEcommerce;
+        return RegisterPageEcommerce; //todo return new RegisterPageEcommerce(); (and for other methods - the same)
     }
 
-    visitLoginPage() {
+    visitLoginPage() { //todo: name it with action
         this.LoginPageLink.click()
         this.headerLogo.should('be.visible')
 
         return LoginPageEcommerce;
     }
 
-    hoverOverCategory() {
+    hoverOverCategory() {//todo: use "Computer"in the name, it is not common category
         this.menuTab.trigger('mouseover');
 
         return this;
@@ -67,7 +67,7 @@ export default class HomePageEcommerce extends BasePageEcommerce {
     }
 
 
-    visitDigitalCategoryPage() {
+    visitDigitalCategoryPage() {//todo: click
         this.digitalCategoryPage.should('be.visible').click()
 
         return ProductPageEcommerce;

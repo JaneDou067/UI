@@ -49,7 +49,7 @@ export default class RegisterPageEcommerce extends BasePageEcommerce {
         return this;
     }
 
-    submitButtonClick() {
+    submitButtonClick() {//todo: action - is the first word (clickSubmitButton())
         this.registerSubmitButton.should('be.visible').click();
 
         return this;
