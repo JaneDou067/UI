@@ -26,7 +26,7 @@ export default class LoginPageEcommerce extends BasePageEcommerce {
         return this;
     }
 
-    submitButtonClick() {
+    submitButtonClick() {//todo:clickSubmitButton
         this.loginSubmitButton.should('be.visible').click();
 
         return this;
