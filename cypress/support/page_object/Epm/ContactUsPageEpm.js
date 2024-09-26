@@ -5,34 +5,52 @@ export default class ContactUsPageEpm extends BasePageEpm {
 
 
 
-    //#region Selectors
     get contactSubmitButton() {
         return cy.get('.button-ui')
     }
+
     get requiredFields() {
         return cy.get('[aria-required="true"]')
     }
-    get errorHandledFieldsList() {
-        return cy.get('[aria-invalid="true"]')
+
+    get firstNameInput() {
+        return cy.get('input[name="user_first_name"]')
     }
 
-    //#endregion
+    get lastNameInput() {
+        return cy.get('input[name="user_last_name"]')
+    }
+
+    get userEmailInput() {
+        return cy.get('input[name="user_email"]')
+    }
+
+    get userPhoneInput() {
+        return cy.get('input[name="user_phone"]')
+    }
+
+    get sourceOfKnownDropdown() {
+        return cy.get('[name="user_comment_how_hear_about"] +.select2  .select2-selection')
+    }
+
+    get gdrpCheckbox() {
+        return cy.get('input[name="gdprConsent"]')
+    }
 
 
 
-    submitContactForm(){ //todo" please use action on the name (clickSubmitButton())
+    clickSubmitButton() {
         this.contactSubmitButton.click()
 
         return this;
     }
 
-    returnHome() { //todo: it is better to use action, that you make in the name - clickHeaderLogo()
+    clickHeaderLogo() {
         this.headerLogo.click()
         return new HomePageEpm();
     }
 
 
-
 }
 
-export const  contactUsPage = new ContactUsPageEpm();
+export const contactUsPage = new ContactUsPageEpm();
