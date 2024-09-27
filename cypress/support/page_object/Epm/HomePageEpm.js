@@ -67,8 +67,6 @@ export default class HomePageEpm extends BasePageEpm {
         return cy.get('.search-results__description')
     }
 
-
-
     switchToggle() {
         this.modeToggle.click();
         return this;

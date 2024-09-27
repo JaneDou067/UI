@@ -38,7 +38,6 @@ export default class ContactUsPageEpm extends BasePageEpm {
     }
 
 
-
     clickSubmitButton() {
         this.contactSubmitButton.click()
 
