@@ -4,7 +4,7 @@ import CheckoutPageEcommerce from "./CheckoutPageEcommerce";
 
 export default class CartPageEcommerce extends BasePageEcommerce {
 
-    //#region Selectors
+
     get removeFromCartCheckbox() {
         return cy.get('.remove-from-cart input')
     }
@@ -20,17 +20,21 @@ export default class CartPageEcommerce extends BasePageEcommerce {
     get agreeTermsCheckbox() {
         return cy.get('.terms-of-service input')
     }
+
     get checkoutAsGuestButton() {
         return cy.get('.checkout-as-guest-button')
     }
 
+    get cartSummarySection() {
+        return cy.get('.order-summary-content')
+    }
 
-
-//#endregion
 
     removeItemFromCart() {
         this.removeFromCartCheckbox.check()
         this.updateCartButton.click()
+
+        return this;
     }
 
     visitCheckoutPage() {
@@ -38,9 +42,9 @@ export default class CartPageEcommerce extends BasePageEcommerce {
         this.checkoutButton.click()
         this.checkoutAsGuestButton.click()
 
-        return CheckoutPageEcommerce;
+        return new CheckoutPageEcommerce();
     }
 
 
 };
-export const  cartPageEcommerce = new CartPageEcommerce();
+export const cartPageEcommerce = new CartPageEcommerce();

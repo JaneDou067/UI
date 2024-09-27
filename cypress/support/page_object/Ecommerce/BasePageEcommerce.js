@@ -1,8 +1,6 @@
 export class BasePageEcommerce {
 
 
-    //#region Selectors
-
     get headerLogo() {
         return cy.get('.header-logo')
     }
@@ -15,19 +13,21 @@ export class BasePageEcommerce {
         return cy.get('#Password')
     }
 
-    get productItem() { //todo: it is not product item - it is first product name, and if it is changed - your locator would fail, because it contains its name, so use productTitleList (.product-title a)
-        return cy.get('.page-body [class^="product"]>a[href="/album-3"]')
+    get productTitleList() {
+        return cy.get('.product-title a')
     }
 
+    get productNameInsideCartOrWishlist() {
+        return cy.get('.product a')
+    }
 
-    get SuccessBanner() {//todo: small first letter
+    get successBanner() {
         return cy.get('.bar-notification.success[style*="display: block"]')
     }
 
-    //#endregion
 
 
-    openSite(){ //todo: it is better to name it visit()
+    visit() {
         cy.visit('https://demowebshop.tricentis.com/');
         this.headerLogo.should('be.visible');
 
@@ -35,14 +35,11 @@ export class BasePageEcommerce {
     }
 
 
-
-    checkSuccess(text){
-        this.SuccessBanner.should('exist').and('contain',(text))
+    checkSuccess(text) {
+        this.successBanner.should('exist').and('contain', (text))
 
         return this;
     }
-
-
 
 
 }

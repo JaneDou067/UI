@@ -1,10 +1,10 @@
-import  {homePageEcommerce} from "../support/page_object/Ecommerce/HomePageEcommerce";
-import  {registerPageEcommerce} from "../support/page_object/Ecommerce/RegisterPageEcommerce";
-import  {loginPageEcommerce} from "../support/page_object/Ecommerce/LoginPageEcommerce";
-import  {cartPageEcommerce} from "../support/page_object/Ecommerce/CartPageEcommerce";
-import  {wishlistPageEcommerce} from "../support/page_object/Ecommerce/WishlistPageEcommerce";
-import  {checkoutPageEcommerce} from "../support/page_object/Ecommerce/CheckoutPageEcommerce";
-import  {productPageEcommerce} from "../support/page_object/Ecommerce/ProductPageEcommerce";
+import {homePageEcommerce} from "../support/page_object/Ecommerce/HomePageEcommerce";
+import {checkoutPageEcommerce} from "../support/page_object/Ecommerce/CheckoutPageEcommerce";
+import ProductPageEcommerce, {
+    productPageEcommerce,
+    sortOption
+} from "../support/page_object/Ecommerce/ProductPageEcommerce";
+import {cartPageEcommerce} from "../support/page_object/Ecommerce/CartPageEcommerce";
 
 
 describe('Ecommerce site checks', () => {
@@ -15,160 +15,159 @@ describe('Ecommerce site checks', () => {
 
     it('Verify that allows register a User', () => {
         homePageEcommerce
-            .openSite()
-            .visitRegisterPage()
-        registerPageEcommerce //todo: continue chain
+            .visit()
+            .clickRegisterLink()
             .inputRegisterRequiredFields()
-            .submitButtonClick()
-            .successMessageBanner.contains('Your registration completed') //todo: for assertion it is better to use should("contain" or "include" or "contain.text" etc)
+            .clickSubmitButton()
+            .successMessageBanner.should('contain','Your registration completed')
     });
 
     it('Verify that allows login a User', () => {
         homePageEcommerce
-            .openSite()
-            .visitLoginPage()
-        loginPageEcommerce
+            .visit()
+            .clickLoginPage()
             .inputLoginRequiredFields()
-            .submitButtonClick()
+            .clickSubmitButton()
             .logoutButton.should('be.visible')
     });
 
     it('Verify that ‘Computers’ group has 3 sub-groups with correct names', () => {
         homePageEcommerce
-            .openSite()
-            .hoverOverCategory()
-            const subGroupNames = ['Desktops', 'Notebooks', 'Accessories'];
-            subGroupNames.forEach((name) => {
-                cy.get('.sublist.firstLevel').contains(name).should('be.visible');//todo: it is bad approach - your selector shows 4 items. Try cy.get('.sublist.active'), it contains 3 li elements,
-                //so check its quantity is 3, and contains each of your subgroupNames, and try not to use forEach here - it is only 3 items in the list, so use should 3 times
-        });
+            .visit()
+            .hoverOverComputerCategory()
+            .computersSubMenuLinks
+                .should('be.visible')
+                .and('have.length', 3)
+                .and('contain','Desktops')
+                .and('contain','Notebooks')
+                .and('contain','Accessories')
     });
 
     it('Verify that allows sorting items (Name ASC)', () => {
         homePageEcommerce
-            .openSite()
-            .visitApparelAndShoesCategoryPage()
-        productPageEcommerce//todo: continue the chain
-            .selectNameAscSortingOption()
-        .checkIfTitlesSortedAscending().then(isSorted => {
-            expect(isSorted).to.be.true;
-        });
+            .visit()
+            .clickApparelAndShoesCategoryLink()
+            .selectSortOption(sortOption.NAME_ASC)
+            .checkIfTitlesSortedAscending().then(isSorted => {
+                expect(isSorted).to.be.true;
+            });
     });
 
     it('Verify that allows sorting items (Name DESC)', () => {
         homePageEcommerce
-            .openSite()
-            .visitApparelAndShoesCategoryPage()
-        productPageEcommerce //todo: continue the chain
-            .selectNameDescSortingOption()
+            .visit()
+            .clickApparelAndShoesCategoryLink()
+            .selectSortOption(sortOption.NAME_DESC)
             .checkIfTitlesSortedDescending().then(isSorted => {
-            expect(isSorted).to.be.true;
-        });
+                expect(isSorted).to.be.true;
+            });
     });
 
     it('Verify that allows sorting items (Price ASC)', () => {
         homePageEcommerce
-            .openSite()
-            .visitApparelAndShoesCategoryPage()
-        productPageEcommerce //todo: continue the chain
-            .selectPriceAscSortingOption()
+            .visit()
+            .clickApparelAndShoesCategoryLink()
+            .selectSortOption(sortOption.PRICE_ASC)
             .checkIfPricesSortedAscending().then(isSorted => {
-            expect(isSorted).to.be.true;
-        });
+                expect(isSorted).to.be.true;
+            });
     });
 
     it('Verify that allows sorting items (Price DESC)', () => {
         homePageEcommerce
-            .openSite()
-            .visitApparelAndShoesCategoryPage()
-        productPageEcommerce
-            .selectPriceDescSortingOption()
+            .visit()
+            .clickApparelAndShoesCategoryLink()
+            .selectSortOption(sortOption.PRICE_DESC)
             .checkIfPricesSortedDescending().then(isSorted => {
-            expect(isSorted).to.be.true;
-        });
+                expect(isSorted).to.be.true;
+            });
     });
 
 
     it('Verify that allows changing number of items on page ', () => {
         homePageEcommerce
-            .openSite()
-            .visitApparelAndShoesCategoryPage()
-        productPageEcommerce //todo: continue the chain
-            .select4PageSizeOption()
-            .productTitles.should('have.length', 4);
+            .visit()
+            .clickApparelAndShoesCategoryLink()
+            .selectItemsPerPage(4)
+            .productTitlesList.should('have.length', 4);
         productPageEcommerce
-            .select8PageSizeOption()
-            .productTitles.should('have.length', 8);
+            .selectItemsPerPage(8)
+            .productTitlesList.should('have.length', 8);
         productPageEcommerce
-            .select12PageSizeOption()
-            .productTitles.should('have.length', 12);
+            .selectItemsPerPage(12)
+            .productTitlesList.should('have.length', 12);
     });
 
     it('Verify that allows adding an item to the Wishlist', () => {
         homePageEcommerce
-            .openSite()
-            .visitDigitalCategoryPage()
-        productPageEcommerce //todo: continue the chain
-            .selectProduct()
-            .addWishlist()
+            .visit()
+            .clickDigitalCategoryLink()
+            .selectProduct(1)
+            .saveProductName('NameOfProdOnProdPage')
+            .clickAddToWishlistBtn()
             .checkSuccess('The product has been added to your wishlist')
             .visitWishlistPage()
-        wishlistPageEcommerce//todo: continue the chain
-            .pageTitle.should('contain','Wishlist' )
-        wishlistPageEcommerce
-            .productItem.should('exist') //todo: when you will use list here, then this check would be bad - you can or try to remember the name of selected item before adding
-        // and then compare it with value in cart (it is harder option, but you can try if you want and ask for my help), or - check that no items is on wishlist at the beginning, and then check - it has
-
+            .pageTitle.should('contain', 'Wishlist')
+        cy.get('@NameOfProdOnProdPage').then(savedProductName => {
+            productPageEcommerce
+                .productNameInsideCartOrWishlist
+                .invoke("text")
+                .then((textFromWishlist) => {
+                    expect(textFromWishlist).to.equal(savedProductName.trim());
+                });
+        });
     });
 
     it('Verify that allows adding an item to the card', () => {
         homePageEcommerce
-            .openSite()
-            .visitDigitalCategoryPage()
-        productPageEcommerce //todo: continue the chain
-            .addToCart()
+            .visit()
+            .clickCartLink()
+            .cartSummarySection
+                .should('not.have.text','Your Shopping Cart is empty!')
+        homePageEcommerce
+            .visit()
+            .clickDigitalCategoryLink()
+            .addToCart(1)
             .checkSuccess('The product has been added to your shopping cart')
-        homePageEcommerce //todo: continue the chain
-            .visitCartPage()
-        cartPageEcommerce//todo: continue the chain
-            .productItem.should('exist')
+        homePageEcommerce
+            .clickCartLink()
+            .productNameInsideCartOrWishlist.should('exist')
     });
 
     it('Verify that allows removing an item from the card', () => {
         homePageEcommerce
-            .openSite()
-            .visitDigitalCategoryPage()
-        productPageEcommerce//todo: continue the chain in all test
-            .addToCart()
+            .visit()
+            .clickCartLink()
+            .cartSummarySection
+            .should('not.have.text','Your Shopping Cart is empty!')
         homePageEcommerce
-            .visitCartPage()
-        cartPageEcommerce
-            .productItem.should('exist')
+            .visit()
+            .clickDigitalCategoryLink()
+            .addToCart(1)
+        homePageEcommerce
+            .clickCartLink()
+            .productNameInsideCartOrWishlist.should('exist')
         cartPageEcommerce
             .removeItemFromCart()
-        cartPageEcommerce
-            .productItem.should('not.exist')
+            .productNameInsideCartOrWishlist.should('not.exist')
     });
 
     it('Verify that allows checkout an item ', () => {
         homePageEcommerce
-            .openSite()
-            .visitDigitalCategoryPage()
-        productPageEcommerce//todo: continue the chain
-            .addToCart()
+            .visit()
+            .clickDigitalCategoryLink()
+            .addToCart(1)
         homePageEcommerce
-            .visitCartPage()
-        cartPageEcommerce
-            .productItem.should('exist')
+            .clickCartLink()
+            .productNameInsideCartOrWishlist.should('exist')
         cartPageEcommerce
             .visitCheckoutPage()
-        checkoutPageEcommerce
             .inputCheckoutRequiredFields()
             .submitUserDataCheckout()
             .enterPaymentDetails()
-        cy.url().should('include','/checkout/completed/')
+        cy.url().should('include', '/checkout/completed/')
         checkoutPageEcommerce
-            .pageTitle.contains('Your order has been successfully processed!')//todo: use should
+            .pageTitle.should('contain','Your order has been successfully processed!')
     });
 
 

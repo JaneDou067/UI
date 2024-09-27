@@ -3,7 +3,7 @@ import {BasePageEcommerce} from "./BasePageEcommerce";
 
 export default class RegisterPageEcommerce extends BasePageEcommerce {
 
-    //#region Selectors
+
     get registerPageLink() {
         return cy.get('.ico-register')
     }
@@ -30,10 +30,6 @@ export default class RegisterPageEcommerce extends BasePageEcommerce {
 
 
 
-
-    //#endregion
-
-
     inputRegisterRequiredFields() {
         const timestamp = Date.now();
         const uniqueNames = `Name-${timestamp}`;
@@ -49,7 +45,7 @@ export default class RegisterPageEcommerce extends BasePageEcommerce {
         return this;
     }
 
-    submitButtonClick() {//todo: action - is the first word (clickSubmitButton())
+    clickSubmitButton() {
         this.registerSubmitButton.should('be.visible').click();
 
         return this;

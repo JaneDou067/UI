@@ -3,7 +3,6 @@ import {BasePageEcommerce} from "./BasePageEcommerce";
 
 export default class CheckoutPageEcommerce extends BasePageEcommerce{
 
-    //#region Selectors
     get firstNameCheckoutField() {
         return cy.get('input#BillingNewAddress_FirstName')
     }
@@ -55,8 +54,6 @@ export default class CheckoutPageEcommerce extends BasePageEcommerce{
     get pageTitle() {
         return cy.get('.title')
     }
-
-    //#endregion
 
 
     inputCheckoutRequiredFields() {
