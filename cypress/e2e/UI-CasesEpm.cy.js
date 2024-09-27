@@ -17,7 +17,8 @@ describe('Main site checks', () => {
     it('Check the ability to switch Light / Dark mode', () => {
         homePageEpm
             .visit()
-
+            .darkModeIndicator.should('exist');
+        homePageEpm
             .switchToggle()
             .lightModeIndicator.should('exist');
 
@@ -60,18 +61,18 @@ describe('Main site checks', () => {
         homePageEpm
             .visit()
             .regionTile
-            .should('be.visible')
-            .and('contain.text', 'United States')
+                .should('be.visible')
+                .and('contain.text', 'United States')
         homePageEpm
             .clickApacTab()
             .regionTile
-            .should('be.visible')
-            .and('contain.text', 'Australia')
+                .should('be.visible')
+                .and('contain.text', 'Australia')
         homePageEpm
             .clickEmeaTab()
             .regionTile
-            .should('be.visible')
-            .and('contain.text', 'Armenia')
+                .should('be.visible')
+                .and('contain.text', 'Armenia')
     });
 
     it('Check the search function', () => {
@@ -81,8 +82,8 @@ describe('Main site checks', () => {
             .searchResultsCounter.should('contain.text', 'results for "AI"')
         homePageEpm
             .searchResultsDescription
-            .find('strong')
-            .should('contain.text', 'AI')
+                .find('strong')
+                .should('contain.text', 'AI')
 
     });
 
@@ -94,28 +95,28 @@ describe('Main site checks', () => {
             .requiredFields.should('have.length', 8);
         contactUsPage
             .firstNameInput
-            .should('be.visible')
-            .and('have.attr', 'aria-invalid', 'true')
+                .should('be.visible')
+                .and('have.attr', 'aria-invalid', 'true')
         contactUsPage
             .lastNameInput
-            .should('be.visible')
-            .and('have.attr', 'aria-invalid', 'true')
+                .should('be.visible')
+                .and('have.attr', 'aria-invalid', 'true')
         contactUsPage
             .userEmailInput
-            .should('be.visible')
-            .and('have.attr', 'aria-invalid', 'true')
+                .should('be.visible')
+                .and('have.attr', 'aria-invalid', 'true')
         contactUsPage
             .userPhoneInput
-            .should('be.visible')
-            .and('have.attr', 'aria-invalid', 'true')
+                .should('be.visible')
+                .and('have.attr', 'aria-invalid', 'true')
         contactUsPage
             .sourceOfKnownDropdown
-            .should('be.visible')
-            .and('have.attr', 'aria-invalid', 'true')
+                .should('be.visible')
+                .and('have.attr', 'aria-invalid', 'true')
         contactUsPage
             .gdrpCheckbox
-            .should('be.visible')
-            .and('have.attr', 'aria-invalid', 'true')
+                .should('be.visible')
+                .and('have.attr', 'aria-invalid', 'true')
     });
 
     it('Check that the Company logo on the header lead to the main page', () => {

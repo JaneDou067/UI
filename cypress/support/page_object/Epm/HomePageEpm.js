@@ -14,6 +14,10 @@ export default class HomePageEpm extends BasePageEpm {
         return cy.get('.light-mode');
     }
 
+    get darkModeIndicator() {
+        return cy.get('.dark-mode');
+    }
+
     get localeSelector() {
         return cy.get('.location-selector__button')
     }
