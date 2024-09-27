@@ -36,7 +36,7 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         return cy.get('.add-to-wishlist-button')
     }
 
-    get addToCartButton() {
+    get addToCartButtonList() {
         return cy.get('.product-box-add-to-cart-button')
     }
 
@@ -144,7 +144,7 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
 
 
     addToCart(prouctIndex) {
-        this.addToCartButton.eq(prouctIndex)
+        this.addToCartButtonList.eq(prouctIndex)
             .click()
 
         return this;
