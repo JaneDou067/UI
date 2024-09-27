@@ -7,76 +7,74 @@ import ProductPageEcommerce from "./ProductPageEcommerce";
 
 export default class HomePageEcommerce extends BasePageEcommerce {
 
-    //#region Selectors
-    get registerPageLink() {
+
+    get registerLink() {
         return cy.get('.ico-register')
     }
 
-    get LoginPageLink() {
+    get loginLink() {
         return cy.get('.ico-login')
     }
 
-    // get subGroupLinks() {
-    //     return cy.get('[href="/computers"] + .top-menu-triangle + .sublist.firstLevel a')
-    // }
-
-    get digitalCategoryPage() {
+    get digitalDownloadsLink() {
         return cy.get('.top-menu [href="/digital-downloads"]')
     }
 
-    get apparelAndShoesCategoryPage() {
+    get apparelAndShoesCategoryLink() {
         return cy.get('.top-menu [href="/apparel-shoes"]')
     }
 
-    get menuTab() {
+    get computerMenuTab() {
         return cy.get('.top-menu [href="/computers"]')
     }
-    get cartPageLink() {
+
+    get cartHeaderLink() {
         return cy.get('.header-links .ico-cart')
     }
 
-
-    //#endregion
-
-
-    visitRegisterPage() {
-        this.registerPageLink.click()
-        this.headerLogo.should('be.visible')
-
-        return RegisterPageEcommerce;
+    get computersSubMenuLinks() {
+        return cy.get('.sublist.active li')
     }
 
-    visitLoginPage() {
-        this.LoginPageLink.click()
+
+    clickRegisterLink() {
+        this.registerLink.click()
         this.headerLogo.should('be.visible')
 
-        return LoginPageEcommerce;
+        return new RegisterPageEcommerce();
     }
 
-    hoverOverCategory() {
-        this.menuTab.trigger('mouseover');
+    clickLoginPage() {
+        this.loginLink.click()
+        this.headerLogo.should('be.visible')
+
+        return new LoginPageEcommerce();
+    }
+
+    hoverOverComputerCategory() {
+        this.computerMenuTab.trigger('mouseover');
 
         return this;
     }
 
-    visitApparelAndShoesCategoryPage() {
-        this.apparelAndShoesCategoryPage.click()
+    clickApparelAndShoesCategoryLink() {
+        this.apparelAndShoesCategoryLink.click()
         cy.url().should('include', '/apparel-shoes')
 
-        return ProductPageEcommerce;
+        return new ProductPageEcommerce();
     }
 
 
-    visitDigitalCategoryPage() {
-        this.digitalCategoryPage.should('be.visible').click()
+    clickDigitalCategoryLink() {
+        this.digitalDownloadsLink.should('be.visible').click()
 
-        return ProductPageEcommerce;
+        return new ProductPageEcommerce();
     }
 
-    visitCartPage() {
-        this.cartPageLink.click()
+    clickCartLink() {
+        this.cartHeaderLink.click()
 
-        return CartPageEcommerce;
+        return new CartPageEcommerce();
     }
 
 

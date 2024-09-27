@@ -2,16 +2,15 @@ import {BasePageEpm} from "./BasePageEpm";
 
 export default class AboutPageEpm extends BasePageEpm {
 
-    //#region Selectors
+
     get downloadButton() {
         return cy.get('[download]')
     }
 
-    //#endregion
 
 
 
-    downloadContent(){
+    clickDownloadButton(){
         const filename= `cypress/downloads/EPAM_Corporate_Overview_Q4_EOY.pdf`
         cy.task('deleteFile', filename).then(success => {
             if (success) {

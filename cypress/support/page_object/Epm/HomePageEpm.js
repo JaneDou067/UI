@@ -5,21 +5,17 @@ import AboutPageEpm from './AboutPageEpm';
 
 export default class HomePageEpm extends BasePageEpm {
 
-    //#region Selectors
+
     get modeToggle() {
         return cy.get('.header__vaulting-container .switch')
-    }
-
-    get darkModeIndicator() {
-        return cy.get('.dark-mode');
     }
 
     get lightModeIndicator() {
         return cy.get('.light-mode');
     }
 
-    get lightModeHeader() {
-        return cy.get('.header__logo-container')
+    get darkModeIndicator() {
+        return cy.get('.dark-mode');
     }
 
     get localeSelector() {
@@ -32,6 +28,7 @@ export default class HomePageEpm extends BasePageEpm {
 
     get regionTile() {
         return cy.get('.locations-viewer-23__carousel');
+
     }
 
     get apacRegionButton() {
@@ -42,11 +39,11 @@ export default class HomePageEpm extends BasePageEpm {
         return cy.get('.tabs-23__title').contains('EMEA');
     }
 
-    get SelectInHeaderContactOption() {
-        return cy.get('.header__controls .cta-button__text');
+    get contactUsHeaderLink() {
+        return cy.get('.header__content > a.header__control');
     }
 
-    get aboutPageSelector() {
+    get aboutHeaderLink() {
         return cy.get('.top-navigation__item-link[href="/about"]');
     }
 
@@ -62,34 +59,16 @@ export default class HomePageEpm extends BasePageEpm {
         return cy.get('.custom-search-button')
     }
 
+    get policiesSectionList() {
+        return cy.get('.footer-links a')
+    }
 
-    //#endregion
+    get searchResultsCounter() {
+        return cy.get('.search-results__counter')
+    }
 
-    //#region Statics
-    static ukraineLocaleIndicator = '.no-touchevents[lang=\'uk-UA\']';
-
-    static policyLinks = [
-        '.footer-links a[href="/cookie-policy"]',
-        '.footer-links  a[href*="privacy.epam.com"]',
-        '.footer-links   a[href="/investors"]',
-        '.footer-links  .links-item a[href*="/open-source"]',
-        '.footer-links  a[href="/applicant-privacy-notice"]',
-        '.footer-links  a[href="/web-accessibility-statement"]'
-    ];
-
-
-    //#endregion
-
-
-
-
-    handleExceptions() {
-        cy.on('uncaught:exception', (e) => {
-            if (e.message.includes('Things went bad')) {
-                return false;
-            }
-        });
-        return this;
+    get searchResultsDescription() {
+        return cy.get('.search-results__description')
     }
 
     switchToggle() {
@@ -97,60 +76,46 @@ export default class HomePageEpm extends BasePageEpm {
         return this;
     }
 
-    checkDarkMode() {
-
-        return this.darkModeIndicator;
-    }
-
-    checkLightMode() {
-
-        return this.lightModeIndicator;
-    }
-
-    chooseLocale() {
+    chooseUkrainianLocale() {
         this.localeSelector.click()
         this.ukraineOption.click()
 
         return this;
     }
 
-    getRegionTiles() {
-        return this.regionTile;
-    }
-
-    switchToAPAC() {
+    clickApacTab() {
         this.apacRegionButton.click();
 
         return this;
     }
 
-    switchToEMEA() {
+    clickEmeaTab() {
         this.emeaRegionButton.click();
 
         return this;
     }
 
-    runSearch() {
+    runSearch(text) {
         this.searchIcon.click();
-        this.searchInput.type('AI');
+        this.searchInput.type(text);
         this.searchSubmit.click();
 
         return this;
     }
 
-    visitContactUsPage() {
-        this.SelectInHeaderContactOption.click({force: true})
+    clickContactUsHeaderLink() {
+        this.contactUsHeaderLink.click({force: true})
 
-        return new ContactUsPageEpm;
+        return new ContactUsPageEpm();
     }
 
-    visitAboutPage() {
-        this.aboutPageSelector.click({force: true})
+    clickAboutHeaderLink() {
+        this.aboutHeaderLink.click({force: true})
 
-        return new AboutPageEpm;
+        return new AboutPageEpm();
     }
 
 
 }
-export const  homePageEpm = new HomePageEpm();
+export const homePageEpm = new HomePageEpm();
 

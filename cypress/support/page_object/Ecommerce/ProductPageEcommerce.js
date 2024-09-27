@@ -1,39 +1,26 @@
 import {BasePageEcommerce} from "./BasePageEcommerce";
 import WishlistPageEcommerce from "./WishlistPageEcommerce";
 
+export const sortOption = Object.freeze({
+    NAME_ASC: 'Name: A to Z',
+    NAME_DESC: 'Name: Z to A',
+    PRICE_ASC: 'Price: Low to High',
+    PRICE_DESC: 'Price: High to Low'
+})
+
 
 export default class ProductPageEcommerce extends BasePageEcommerce {
 
-    //#region Selectors
-    get registerPageLink() {
-        return cy.get('.ico-register')
-    }
 
     get sortingDropdown() {
         return cy.get('#products-orderby')
     }
 
-    get nameAscSortingOption() {
-        return "Name: A to Z";
-    }
-
-    get nameDescSortingOption() {
-        return "Name: Z to A";
-    }
-
-    get priceAscSortingOption() {
-        return "Price: Low to High";
-    }
-
-    get priceDescSortingOption() {
-        return "Price: High to Low";
-    }
-
-    get productTitles() {
+    get productTitlesList() {
         return cy.get('.product-title a')
     }
 
-    get productPrices() {
+    get productPricesList() {
         return cy.get('.prices span')
     }
 
@@ -41,19 +28,7 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         return cy.get('#products-pagesize')
     }
 
-    get pageSize4Option() {
-        return "4";
-    }
-
-    get pageSize8Option() {
-        return "8";
-    }
-
-    get pageSize12Option() {
-        return "12";
-    }
-
-    get wishlistPageLink() {
+    get wishlistHeaderLink() {
         return cy.get('.header-links .ico-wishlist')
     }
 
@@ -61,25 +36,17 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         return cy.get('.add-to-wishlist-button')
     }
 
-    get addToCartButton() {
-        return cy.get('[data-productid="53"] .product-box-add-to-cart-button')
+    get addToCartButtonList() {
+        return cy.get('.product-box-add-to-cart-button')
     }
 
-//#endregion
-
-
-
-
-
-    selectNameAscSortingOption() {
-        this.sortingDropdown.select(this.nameAscSortingOption);
-        cy.url().should('include', 'orderby=5');
-
-        return this;
+    get productNameOnProductPage() {
+        return cy.get('.product-name')
     }
+
 
     checkIfTitlesSortedAscending() {
-        return this.productTitles.then($links => {
+        return this.productTitlesList.then($links => {
             const titles = $links.map((index, link) => Cypress.$(link).text()).get();
             for (let i = 0; i < titles.length - 1; i++) {
                 if (titles[i].localeCompare(titles[i + 1]) > 0) {
@@ -90,15 +57,9 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         });
     }
 
-    selectNameDescSortingOption() {
-        this.sortingDropdown.select(this.nameDescSortingOption);
-        cy.url().should('include', 'orderby=6');
-
-        return this;
-    }
 
     checkIfTitlesSortedDescending() {
-        return this.productTitles.then($links => {
+        return this.productTitlesList.then($links => {
             const titles = $links.map((index, link) => Cypress.$(link).text()).get();
             for (let i = 0; i < titles.length - 1; i++) {
                 if (titles[i].localeCompare(titles[i + 1]) < 0) {
@@ -109,15 +70,9 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         });
     }
 
-    selectPriceAscSortingOption() {
-        this.sortingDropdown.select(this.priceAscSortingOption);
-        cy.url().should('include', 'orderby=10');
-
-        return this;
-    }
 
     checkIfPricesSortedAscending() {
-        return this.productPrices.then(prices => {
+        return this.productPricesList.then(prices => {
             for (let i = 0; i < prices.length - 1; i++) {
                 if (prices[i] > prices[i + 1]) {
                     return false;
@@ -127,15 +82,9 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         });
     }
 
-    selectPriceDescSortingOption() {
-        this.sortingDropdown.select(this.priceDescSortingOption);
-        cy.url().should('include', 'orderby=11');
-
-        return this;
-    }
 
     checkIfPricesSortedDescending() {
-        return this.productPrices.then(prices => {
+        return this.productPricesList.then(prices => {
             for (let i = 0; i < prices.length - 1; i++) {
                 if (prices[i] < prices[i + 1]) {
                     return false;
@@ -145,35 +94,41 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
         });
     }
 
-    select4PageSizeOption() {
-        this.pageSizeDropdown.select(this.pageSize4Option);
-        cy.url().should('include', 'pagesize=4');
 
-        return this;
-    }
-
-    select8PageSizeOption() {
-        this.pageSizeDropdown.select(this.pageSize8Option);
-        cy.url().should('include', 'pagesize=8');
-
-        return this;
-    }
-
-    select12PageSizeOption() {
-        this.pageSizeDropdown.select(this.pageSize12Option);
-        cy.url().should('include', 'pagesize=12');
-
+    selectSortOption(value) {
+        if (!Object.values(sortOption).includes(value)) {
+            throw new Error(`Invalid sort option. Allowed are: ${Object.values(sortOption)}`)
+        }
+        this.sortingDropdown.select(value);
         return this;
     }
 
 
-    selectProduct() {
-        this.productItem.should('exist').click()
+    selectItemsPerPage(number) {
+        if (![4, 8, 12].includes(number)) {
+            throw new Error('Invalid number for items per page. Allowed values are 4, 8, 12.')
+        }
+        this.pageSizeDropdown.select(number.toString());
+        cy.url().should('include', `pagesize=${number}`);
+        return this;
+    }
+
+    selectProduct(productIndex) {
+        this.productTitleList.eq(productIndex).click()
 
         return this;
     }
 
-    addWishlist() {
+    saveProductName(savedProductNameValue) {
+        this.productNameOnProductPage.invoke('text').then((text) => {
+            let savedProductName = text;
+            cy.wrap(savedProductName).as(savedProductNameValue);
+        });
+
+        return this;
+    }
+
+    clickAddToWishlistBtn() {
         this.addToWishListButton.click()
 
         return this;
@@ -181,15 +136,16 @@ export default class ProductPageEcommerce extends BasePageEcommerce {
 
 
     visitWishlistPage() {
-        this.wishlistPageLink.click()
+        this.wishlistHeaderLink.click()
         this.headerLogo.should('be.visible')
 
-        return WishlistPageEcommerce;
+        return new WishlistPageEcommerce();
     }
 
 
-    addToCart() {
-        this.addToCartButton.click()
+    addToCart(prouctIndex) {
+        this.addToCartButtonList.eq(prouctIndex)
+            .click()
 
         return this;
     }

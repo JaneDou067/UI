@@ -1,10 +1,8 @@
 import {BasePageEcommerce} from "./BasePageEcommerce";
 
 
-
 export default class LoginPageEcommerce extends BasePageEcommerce {
 
-    //#region Selectors
 
     get loginSubmitButton() {
         return cy.get('.login-button')
@@ -15,9 +13,6 @@ export default class LoginPageEcommerce extends BasePageEcommerce {
     }
 
 
-    //#endregion
-
-
     inputLoginRequiredFields() {
         cy.fixture('profile').then((credentials) => {
             this.emailField.type(credentials.email);
@@ -26,12 +21,11 @@ export default class LoginPageEcommerce extends BasePageEcommerce {
         return this;
     }
 
-    submitButtonClick() {
+    clickSubmitButton() {
         this.loginSubmitButton.should('be.visible').click();
 
         return this;
     }
-
 
 
 }
