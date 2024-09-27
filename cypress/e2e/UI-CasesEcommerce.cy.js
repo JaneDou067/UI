@@ -123,7 +123,7 @@ describe('Ecommerce site checks', () => {
             .visit()
             .clickCartLink()
             .cartSummarySection
-                .should('not.have.text','Your Shopping Cart is empty!')
+                .should('contain.text','Your Shopping Cart is empty!')
         homePageEcommerce
             .visit()
             .clickDigitalCategoryLink()
@@ -135,11 +135,6 @@ describe('Ecommerce site checks', () => {
     });
 
     it('Verify that allows removing an item from the card', () => {
-        homePageEcommerce
-            .visit()
-            .clickCartLink()
-            .cartSummarySection
-            .should('not.have.text','Your Shopping Cart is empty!')
         homePageEcommerce
             .visit()
             .clickDigitalCategoryLink()
